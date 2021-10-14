@@ -43,8 +43,3 @@ class LayoutPlate(Plate):
 
         data[self.metric]= np.where(data[self.metric].isin(["Empty", "\"+\"", "\"-\""]), np.nan, data[self.metric])
         data[self.metric] = data[self.metric].astype(float)
-        # self.data = data
-
-
-# df["new_column"] = "slurp"
-# df.loc(df["fart"] == "heck yes", "new_column") = "tango"
