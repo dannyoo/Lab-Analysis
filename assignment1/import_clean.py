@@ -39,5 +39,5 @@ treatment630_log.head()
 
 # merge treatment test with plate layout[well, contents]
 treatment630_log = pd.merge(treatment630_log, group1.data[["well", "contents"]], on="well")
+
 treatment630_log.head()
-# %%
