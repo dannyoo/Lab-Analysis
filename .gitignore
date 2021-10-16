@@ -1,2 +1,4 @@
-
+*/__pycache__
+*testing_column_bias.py
 *.csv
+.DS_Store
