@@ -45,8 +45,11 @@ def column_bias(data_file, data_metric, layout_file):
         statistic, pvalue = st.ttest_ind (rep_1['absorbance'], rep_2['absorbance'])
         if(pvalue < 0.05):
             bias_flag = True
-            print("column", rep_cols[0], "and column",
-            rep_cols[1], "are significantly different.")
+            # print(rep_1)
+            # print(rep_2)
+            print("column", rep_cols[0] + 1, "and column",
+            rep_cols[1] + 1, "are significantly different.", 
+            "The dilution is ", item)
     
     if (not bias_flag): # if flag is still False
         print("no column bias detected")
