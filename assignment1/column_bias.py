@@ -48,8 +48,10 @@ def column_bias(data_file, data_metric, layout_file):
             # print(rep_1)
             # print(rep_2)
             print("column", rep_cols[0] + 1, "and column",
-            rep_cols[1] + 1, "are significantly different.", 
-            "The dilution is ", item)
+            rep_cols[1] + 1, "are significantly different", 
+            "\nThe p value is", format(pvalue, '.3f'), 
+            "\nThe dilution is", item, 
+            "\nindexing of column number starts from 1.")
     
     if (not bias_flag): # if flag is still False
         print("no column bias detected")
