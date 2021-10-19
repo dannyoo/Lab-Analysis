@@ -3,5 +3,5 @@
 
 # %%
 from column_bias import *
-column_bias("treatment_430.csv", "absorbance", "plate_layout1.csv")
+column_bias("../ld50_data/treatment_430.csv", "absorbance", "../ld50_data/plate_layout1.csv")
 # %%
