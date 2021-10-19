@@ -4,20 +4,21 @@ import pandas as pd
 
 pd.options.mode.chained_assignment = None
 
+# %%
 # load data into plates
 
 # layouts for each group
-group1 = LayoutPlate("plate_layout1.csv", "dilution")
-group2 = LayoutPlate("plate_layout2.csv", "dilution")
-group3 = LayoutPlate("plate_layout3.csv", "dilution")
+group1 = LayoutPlate("../ld50_data/plate_layout1.csv", "dilution")
+group2 = LayoutPlate("../ld50_data/plate_layout2.csv", "dilution")
+group3 = LayoutPlate("../ld50_data/plate_layout3.csv", "dilution")
 
 # treatment test over three wavelength; 430, 600, 630
-treatment430 = Plate("treatment_430.csv", "absorbance")
-treatment600 = Plate("treatment_600.csv", "absorbance")
-treatment630 = Plate("treatment_630.csv", "absorbance")
+treatment430 = Plate("../ld50_data/treatment_430.csv", "absorbance")
+treatment600 = Plate("../ld50_data/treatment_600.csv", "absorbance")
+treatment630 = Plate("../ld50_data/treatment_630.csv", "absorbance")
 
 # cellplate test
-cellplate = Plate("cellplate.csv", "absorbance")
+cellplate = Plate("../ld50_data/cellplate.csv", "absorbance")
 
 # %%
 
