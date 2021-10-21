@@ -90,8 +90,8 @@ class CellData():
         df_neg_pi = df[df["contents"] == "Negative"]["pi_intensity"]
         neg_95_confInt = st.t.interval(0.95, len(df_neg_pi)-1, loc=np.mean(df_neg_pi), scale=st.sem(df_neg_pi))
         threshold = math.ceil(neg_95_confInt[1])
-        print(threshold)
-        print(len(df_pos_pi[df_pos_pi > threshold])/len(df_pos_pi))
+        # print(threshold)
+        # print(len(df_pos_pi[df_pos_pi > threshold])/len(df_pos_pi))
         cutoff_ttest = st.ttest_1samp(df_pos_pi, threshold)
         # set the p value low so we are more sure that the threshold is good
         if(cutoff_ttest.pvalue >= 0.005):
