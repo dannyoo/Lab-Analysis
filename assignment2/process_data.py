@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import scipy.stats as st
+import math
 
 class Plate:
     def __init__(self, filename, metric):
@@ -80,9 +82,24 @@ class CellData():
         count = count.groupby(["well", "well_row", "well_column", "field", "contents", "dilution"])['cell'].count().reset_index()
         return count
     
-    def ld_ratio(self, threshold=617.3261022178222):
-        # this threshold value assumes what we did here: ./analysis.ipynb
-        # I believe the threshold value applies to all dataframes that we get from that machine this semester ;p
+    def getThreshold(self):
+        # sets the threshold to be the integer directly above the upperbound
+        # of the 95% confidence interval of the negative control
+        df = self.data.copy()
+        df_pos_pi = df[df["contents"] == "Positive"]["pi_intensity"]
+        df_neg_pi = df[df["contents"] == "Negative"]["pi_intensity"]
+        neg_95_confInt = st.t.interval(0.95, len(df_neg_pi)-1, loc=np.mean(df_neg_pi), scale=st.sem(df_neg_pi))
+        threshold = math.ceil(neg_95_confInt[1])
+        # print(threshold)
+        # print(len(df_pos_pi[df_pos_pi > threshold])/len(df_pos_pi))
+        cutoff_ttest = st.ttest_1samp(df_pos_pi, threshold)
+        # set the p value low so we are more sure that the threshold is good
+        if(cutoff_ttest.pvalue >= 0.005):
+            raise Exception("too much overlap between negative and postive controls' intensities in", self.filename)
+        return threshold
+
+    def ld_ratio(self):
+        threshold = self.getThreshold(self)
         df = self.data.copy() # think of it as w2_df
         wells_df = self.wellCounts()
         default = ['alive' for x in range(len(df))]
