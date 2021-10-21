@@ -99,7 +99,7 @@ class CellData():
         return threshold
 
     def ld_ratio(self):
-        threshold = self.getThreshold(self)
+        threshold = self.getThreshold()
         df = self.data.copy() # think of it as w2_df
         wells_df = self.wellCounts()
         default = ['alive' for x in range(len(df))]
