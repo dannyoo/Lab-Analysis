@@ -79,3 +79,42 @@ class CellData():
         count = self.data.copy()
         count = count.groupby(["well", "well_row", "well_column", "field", "contents", "dilution"])['cell'].count().reset_index()
         return count
+    
+    def ld_ratio(self, threshold=617.3261022178222):
+        # this threshold value assumes what we did here: ./analysis.ipynb
+        # I believe the threshold value applies to all dataframes that we get from that machine this semester ;p
+        df = self.data.copy() # think of it as w2_df
+        wells_df = self.wellCounts()
+        default = ['alive' for x in range(len(df))]
+        df['State'] = default
+        df.loc[(df['pi_intensity'] >= threshold), 'State'] = 'dead'
+        #create new rows
+        wells = wells_df.well.unique()
+        wells_df['alive_count'] = [0 for x in range(len(wells_df))]
+        wells_df['dead_count']= [0 for x in range(len(wells_df))]
+        wells_df['ld_ratio']= [0 for x in range(len(wells_df))]
+        # insert data
+        for x in wells:
+            value_counts = df.loc[(df['well'] == x), 'State'].value_counts()
+            alive_count = 0
+            dead_count = 0
+            ratio = 0
+            try:
+                alive_count= value_counts.alive
+            except:
+                print("zero living cells for ", x)
+
+            try:
+                dead_count= value_counts.dead
+            except:
+                print("zero dead cells for ", x)
+
+            try:
+                ratio = dead_count/alive_count
+            except:
+                print("nothing was living")
+
+            wells_df.loc[(wells_df['well'] == x),'alive_count'] = alive_count
+            wells_df.loc[(wells_df['well'] == x),'dead_count'] = dead_count
+            wells_df.loc[(wells_df['well'] == x),'ld_ratio'] = ratio
+        return wells_df

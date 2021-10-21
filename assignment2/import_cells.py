@@ -41,4 +41,5 @@ wells_w2 = wildtype2.wellCounts()
 # counts by field for wildtype
 fields_w2 = wildtype2.fieldCounts()
 
-# %%
+# creates 3 columns dead_count, alive_count, & ld_ratio = dead_count
+ld_w2 = wildtype2.ld_ratio()
