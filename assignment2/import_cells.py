@@ -19,9 +19,9 @@ c1_df = continuous1.data
 continuous2 = CellData("../ld50_data/continuous_group2.txt", group2)
 c2_df = continuous2.data
 
-# cell line: wildtype; group: 2
-wildtype2 = CellData("../ld50_data/wildtype_group2.txt", group2)
-w2_df = wildtype2.data
+# cell line: wildtype; group: 3
+wildtype3 = CellData("../ld50_data/wildtype_group2.txt", group3)
+w3_df = wildtype3.data
 
 # cell line: blast; group: 3
 blast3 = CellData("../ld50_data/blast_group3.txt", group3)
@@ -36,10 +36,18 @@ treated_cells.head()
 # %%
 
 # counts by well for wildtype
-wells_w2 = wildtype2.wellCounts()
+wells_w3 = wildtype3.wellCounts()
 
 # counts by field for wildtype
-fields_w2 = wildtype2.fieldCounts()
+fields_w3 = wildtype3.fieldCounts()
 
-# creates 3 columns dead_count, alive_count, & ld_ratio = dead_count
-ld_w2 = wildtype2.ld_ratio()
+# creates 3 columns dead_count, alive_count, & ld_ratio = dead_count / alive count
+ld_w3 = wildtype3.ld_ratio()
+
+# %%
+# take a look
+print(wells_w3.head())
+print(fields_w3.head())
+print(ld_w3.head())
+#ld_w3["well"]
+# %%
