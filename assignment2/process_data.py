@@ -1,3 +1,4 @@
+from collections import defaultdict
 import pandas as pd
 import numpy as np
 import scipy.stats as st
@@ -46,6 +47,17 @@ class LayoutPlate(Plate):
 
         data[self.metric]= np.where(data[self.metric].isin(["Empty", "\"+\"", "\"-\""]), 0, data[self.metric])
         data[self.metric] = data[self.metric].astype(float)
+
+
+        metric_list = data[data.contents == "Treatment"][self.metric].unique().tolist()
+        metric_list.sort(reverse=True)
+        i = 1
+        metric_map = defaultdict()
+        metric_map[0.0] = 0
+        for elem in metric_list:
+            metric_map[elem] = i
+            i+=1
+        data[self.metric+"_rank"] = data[self.metric].map(metric_map)
 
 class CellData():
     def __init__(self, filename, layout_plate):
