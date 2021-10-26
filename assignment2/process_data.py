@@ -111,6 +111,7 @@ class CellData():
         return threshold
 
     def ld_ratio(self):
+        # ratio is dead/(dead + alive) so it is a value between 0 and 1
         threshold = self.getThreshold()
         df = self.data.copy() # think of it as w2_df
         wells_df = self.wellCounts()
@@ -139,7 +140,7 @@ class CellData():
                 print("zero dead cells for ", x)
 
             try:
-                ratio = dead_count/alive_count
+                ratio = dead_count/(alive_count + dead_count)
             except:
                 print("nothing was living")
 
