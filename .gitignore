@@ -1,2 +1,7 @@
-
+.ipynb_checkpoints
+*.txt
 *.csv
+.DS_Store 
+__pycache__/
+testingThreshold.py
+*.zip

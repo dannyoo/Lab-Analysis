@@ -8,7 +8,6 @@ pd.options.mode.chained_assignment = None
 group1 = LayoutPlate("../ld50_data/plate_layout1.csv", "dilution")
 group2 = LayoutPlate("../ld50_data/plate_layout2.csv", "dilution")
 group3 = LayoutPlate("../ld50_data/plate_layout3.csv", "dilution")
-group1.data.head()
 # %%
 
 # cell line: continuous; group: 1
@@ -51,12 +50,10 @@ print(fields_w3.head())
 print(ld_w3.head())
 #ld_w3["well"]
 # %%
-ld_w3.head()
-# %%
-group1.data["dilution"].unique()
-# %%
+
 #Groups columns of live/death ratio by dilution
 dilution_map = {0.22: 1, 0.044: 2, 0.0088: 3, 0.00176: 4, 0.000352: 5, 0.0000704: 6, 0.0000141: 7, 0.00000282: 8}
 ld_w3["dilution_no"] = ld_w3["dilution"].map(dilution_map)
 # ld_w3.head()
 # %%
+
