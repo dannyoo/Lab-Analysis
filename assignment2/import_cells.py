@@ -45,15 +45,15 @@ ld_w3 = wildtype3.ld_ratio()
 
 # %%
 # take a look
-print(wells_w3.head())
-print(fields_w3.head())
-print(ld_w3.head())
+# print(wells_w3.head())
+# print(fields_w3.head())
+# print(ld_w3.head())
 #ld_w3["well"]
 # %%
 
 #Groups columns of live/death ratio by dilution
-dilution_map = {0.22: 1, 0.044: 2, 0.0088: 3, 0.00176: 4, 0.000352: 5, 0.0000704: 6, 0.0000141: 7, 0.00000282: 8}
-ld_w3["dilution_no"] = ld_w3["dilution"].map(dilution_map)
+# dilution_map = {0.22: 1, 0.044: 2, 0.0088: 3, 0.00176: 4, 0.000352: 5, 0.0000704: 6, 0.0000141: 7, 0.00000282: 8}
+# ld_w3["dilution_no"] = ld_w3["dilution"].map(dilution_map)
 # ld_w3.head()
 # %%
 
