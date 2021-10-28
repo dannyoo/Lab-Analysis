@@ -26,48 +26,32 @@ def field_bias(plate_data, data_metric):
     tonly = plate_data[plate_data['contents'] == 'Treatment']
 
     # Debugging:
-    #print(tonly.head())
+    # print(tonly.head())
 
     # checking row bias
     bias_flag = False # whether there is bias
 
-    rows = ['B', 'C', 'D', 'E', 'F', 'G']
-    row_data = [tonly[tonly['well'].str.contains(r)] for r in rows] # split df by row
-    row_b, row_c, row_d, row_e, row_f, row_g = row_data[0], row_data[1], row_data[2], row_data[3], row_data[4], row_data[5]
-
     # Debugging:
-    #print(row_b.head(), row_c.head(), row_d.head(), row_e.head(), row_f.head(), row_g.head())
+    # field_vals = [float(i) for i in range(1, 26)]
+    # field_data = [tonly[tonly['field'] == f] for f in field_vals]
+    # populations = [field_data[i][data_metric] for i in range(25)]
 
     # doing the one-way ANOVA test between all rows
-    _, pvalue = st.f_oneway(row_b[data_metric], row_c[data_metric], row_d[data_metric], row_e[data_metric], row_f[data_metric], row_g[data_metric])
+    field_cell_counts = tonly.groupby('field')['cell'].apply(list)
+    _, pvalue = st.f_oneway(*field_cell_counts)
 
     # Debugging: 
-    #print(pvalue)
-    #pvalue = 0.04
+    # print(pvalue)
 
     if pvalue < 0.05:
         bias_flag = True
 
-        # Conduct t-test between every pair of rows, i and j
-        for i in range(len(row_data)):
-            j = i + 1
-            while j < len(row_data):
+        # pick 10 random wells
+        # Get average cell counts in top, bottom, left, right, and middle
+        # Display results. For each of the 10 random wells, write which region had most cells
 
-                row_1 = row_data[i]
-                row_2 = row_data[j]
-                _, t_pvalue = st.ttest_ind(row_1[data_metric], row_2[data_metric])
-
-                # Debugging:
-                # print("row", row_1['well'].values[0][0], "and row", row_2['well'].values[0][0],
-                # "\nThe p value is", format(t_pvalue, '.3f'), '\n')
-                
-                if t_pvalue < 0.05:
-                    print("row", row_1['well'].values[0][0], "and row",
-                    row_2['well'].values[0][0], "are significantly different", 
-                    "\nThe p value is", format(t_pvalue, '.3f'), '\n')
-
-                j += 1
+        
     
-    # if (not bias_flag): # if flag is still False
-    #     print("no row bias detected")
+    if (not bias_flag): # if flag is still False
+        print("no row bias detected")
     return bias_flag

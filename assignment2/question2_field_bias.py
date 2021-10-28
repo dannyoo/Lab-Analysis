@@ -1,4 +1,5 @@
 # %%
+from field_bias import field_bias
 from process_data import LayoutPlate, CellData
 import pandas as pd
 from row_bias import *
@@ -33,11 +34,16 @@ b3_fieldCounts = blast3.fieldCounts()
 # %%
 all_fieldCounts = [c1_fieldCounts, c2_fieldCounts, w3_fieldCounts, b3_fieldCounts]
 name = ["countinuous1", "continuous2", "wildtype", "blast"]
-for idx in range(len(all_fieldCounts)):
-    print("\n")
-    print("now analyzing row bias of", name[idx])
-    f_b = field_bias(all_fieldCounts[idx], "cell")
-    if (not f_b):
-        print("no field bias")
+
+# for idx in range(len(all_fieldCounts)):
+#     print("\n")
+#     print("now analyzing field bias of", name[idx])
+#     f_b = field_bias(all_fieldCounts[idx], "cell")
+#     if (not f_b):
+#         print("no field bias")
+
+f_b = field_bias(all_fieldCounts[0], "cell")
+if (not f_b):
+    print("no field bias")
 
 # %%
