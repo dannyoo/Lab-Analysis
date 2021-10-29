@@ -1,24 +1,28 @@
 '''
-row_bias checks if there exists row bias among all the rows. Row bias
+field_bias checks if there exists field bias among all the fields. Field bias
 is indicated by a significant p-value resulting from a one-way ANOVA
-f-test conducted on the metrics (e.g. absorbance) between rows. 
+f-test conducted on the metrics (e.g. cell counts) between fields. 
 
-If the ANOVA indicates the presence of row bias, a t-test is conducted
-between every pair of rows to find the actual source(s) of bias. 
+If the ANOVA indicates the presence of row bias, t-tests are conducted
+between pairs of odd number fields to find the actual source(s) of bias. 
+Only half of the fields are included in the t-test to reduce the number of
+tests needed. We expect fields close to each other to have similar values.
 
-input: called by get_treatment. See get_treatment for more information.
-        data_file: plate data file directory (e.g. treatment_430.csv)
-        data_metric: give a name (String) to what is measured (e.g. "absorbance")
-        layout_file: plate layout file directory (e.g. plate_layout1.csv)
+A Tukey's test is also added. It is similar to a t-test. However, the data frame
+printed compared all fields against another.
+
+input: plate_data, a pandas data frame
 
 output: bias_flag, a boolean value showing whether or not there is
         any column bias detected. If the value is True, then the two
         columns that are significantly different will be printed out.
 
-contact Adi for questions or bugs        
+contact Adi and Melody for questions or bugs        
 '''
 import numpy as np
 from scipy import stats as st
+from statsmodels.stats import multicomp as st2
+import pandas as pd
 
 def field_bias(plate_data, data_metric):
     # filter out only venom treated wells
@@ -46,7 +50,20 @@ def field_bias(plate_data, data_metric):
         bias_flag = True
         print("Therefore, there is a statistically significant difference between fields.\n")
 
-        # determine which regions within well contain the most cells per field
+        #pair-wise t test between odd number fields
+
+        for i in range(1,25,2):
+            for j in range(i+2, 26,2):
+                _,t_pvalue = st.ttest_ind(field_cell_counts[i],field_cell_counts[j])
+                if t_pvalue < 0.05:
+                    print("fields", i, "and", j, "are significantly different.")
+
+        #tukey's test
+        tukeyObject = st2.pairwise_tukeyhsd(endog = tonly['cell'], groups = tonly['field'], alpha = 0.05)
+        tukey_data = pd.DataFrame(data=tukeyObject._results_table.data[1:], columns = tukeyObject._results_table.data[0])
+        print("\n Result from Tukey's post hoc test")
+        pd.set_option('max_row', None)
+        print(tukey_data[tukey_data["reject"] == True])
 
         wells = ['C3', 'D4', 'E5', 'F6', 'G7', 'F8', 'E9', 'D10']
         top = [21.0, 22.0, 23.0, 24.0, 25.0]
