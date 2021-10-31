@@ -15,7 +15,7 @@ ld_b3 = blast3.ld_ratio()
 #This is setting each live/dead ratio of a cell type based
 #on dilution column to a more managable variable
 cellLine = [ld_c1, ld_c2, ld_w3, ld_b3]
-name = ["countinuous1", "continuous2", "wildtype", "blast"]
+name = ["continuous1", "continuous2", "wildtype", "blast"]
 for idx in range(len(cellLine)):
     record = []
     toxin_conc = sorted((cellLine[idx])[(cellLine[idx])["contents"] == "Treatment"]["dilution"].unique())
