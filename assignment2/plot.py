@@ -70,7 +70,7 @@ for idx in range(len(cellLine)):
     
     plt.title('LD50 Curve for ' + name[idx])
     plt.xlabel('Toxin Concentration (mg/mL)')
-    plt.ylabel('number of cells / expected number of cells)')
+    plt.ylabel('number of cells / expected number of cells')
     #plt.ylim([0,0.6])
     plt.xscale("log")
     plt.tight_layout()
