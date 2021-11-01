@@ -23,8 +23,9 @@ import numpy as np
 from scipy import stats as st
 from statsmodels.stats import multicomp as st2
 import pandas as pd
+from matplotlib import pyplot as plt
 
-def field_bias(plate_data, data_metric):
+def field_bias(plate_data, data_metric, plate_name):
     # filter out only venom treated wells
         #tonly means treatment only
     tonly = plate_data[plate_data['contents'] == 'Treatment']
@@ -52,18 +53,28 @@ def field_bias(plate_data, data_metric):
 
         #pair-wise t test between odd number fields
 
-        for i in range(1,25,2):
-            for j in range(i+2, 26,2):
-                _,t_pvalue = st.ttest_ind(field_cell_counts[i],field_cell_counts[j])
-                if t_pvalue < 0.05:
-                    print("fields", i, "and", j, "are significantly different.")
+        # for i in range(1,25,2):
+        #     for j in range(i+2, 26,2):
+        #         _,t_pvalue = st.ttest_ind(field_cell_counts[i],field_cell_counts[j])
+        #         if t_pvalue < 0.05:
+        #             print("fields", i, "and", j, "are significantly different.")
 
         #tukey's test
         tukeyObject = st2.pairwise_tukeyhsd(endog = tonly['cell'], groups = tonly['field'], alpha = 0.05)
         tukey_data = pd.DataFrame(data=tukeyObject._results_table.data[1:], columns = tukeyObject._results_table.data[0])
         print("\n Result from Tukey's post hoc test")
         pd.set_option('max_row', None)
-        print(tukey_data[tukey_data["reject"] == True])
+        bias_fields = tukey_data[tukey_data["reject"] == True]
+        # print(bias_fields)
+        field_occurence = bias_fields["group1"]
+        field_occurence = field_occurence.append(bias_fields["group2"])
+
+        plt.hist(field_occurence, bins = range(1,27), edgecolor = "black")
+        plt.xlabel("field number")
+        plt.ylabel("times of occurence in Tukey's test")
+        # plt.xticks(ticks = range(1, 26), labels = range(1,26))
+        plt.title(plate_name)
+        plt.show()
 
         wells = ['C3', 'D4', 'E5', 'F6', 'G7', 'F8', 'E9', 'D10']
         top = [21.0, 22.0, 23.0, 24.0, 25.0]

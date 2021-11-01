@@ -68,6 +68,6 @@ def row_bias(plate_data, data_metric):
 
                 j += 1
     
-    # if (not bias_flag): # if flag is still False
-    #     print("no row bias detected")
+    if (not bias_flag): # if flag is still False
+        print("no row bias detected")
     return bias_flag

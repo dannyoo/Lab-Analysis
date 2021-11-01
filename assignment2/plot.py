@@ -23,7 +23,14 @@ for idx in range(len(cellLine)):
         ld_ratio_at_dil = (cellLine[idx])[(cellLine[idx])["dilution"] == dilution].ld_ratio
         ld_ratio_avg = np.mean(ld_ratio_at_dil)
         record.append(ld_ratio_avg)
-    # print(record)
+    
+    for i in range(len(record)):
+        if record[i] > 0.5:
+            k = (toxin_conc[i-1] - toxin_conc[i]) / (record[i-1] - record[i])
+            b = toxin_conc[i-1] - k * record[i-1]
+            print("interpolated LD-50 is", k * 0.5 + b)
+            break
+
     # print("\n")
     # print(toxin_conc)
     plt.plot(toxin_conc, record)
@@ -42,7 +49,7 @@ wells_c1 = continuous1.wellCounts()
 wells_c2 = continuous2.wellCounts()
 wells_w3 = wildtype3.wellCounts()
 wells_b3 = blast3.wellCounts()
-wells_c1.head()
+# wells_c1.head()
 # %%
 #This plot takes the total live in each well in each dilution column / total alive in neg control
 #to give % cells alive
@@ -59,9 +66,13 @@ for idx in range(len(cellLine)):
         alive_no_avg = np.mean(alive_no_at_dil["cell"])
         alive_ratio = alive_no_avg /neg_alive
         record.append(alive_ratio)
-    # print(record)
-    # print("\n")
-    # print(toxin_conc)
+    
+    for i in range(len(record)):
+        if record[i] < 0.5:
+            k = (toxin_conc[i-1] - toxin_conc[i]) / (record[i-1] - record[i])
+            b = toxin_conc[i-1] - k * record[i-1]
+            print("interpolated LD-50 is", k * 0.5 + b)
+            break
     
     plt.plot(toxin_conc, record)
     # print(toxin_conc)
@@ -71,7 +82,7 @@ for idx in range(len(cellLine)):
     plt.title('LD50 Curve for ' + name[idx])
     plt.xlabel('Toxin Concentration (mg/mL)')
     plt.ylabel('number of cells / expected number of cells')
-    #plt.ylim([0,0.6])
+    plt.ylim([0,1.5])
     plt.xscale("log")
     plt.tight_layout()
     plt.show()
