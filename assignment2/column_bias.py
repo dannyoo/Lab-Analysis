@@ -18,8 +18,9 @@ contact Melody for questions or bugs
 '''
 import numpy as np
 from scipy import stats as st
+from matplotlib import pyplot as plt
 
-def column_bias(plate_data, data_metric):
+def column_bias(plate_data, data_metric, plate_name):
     # filter out only venom treated wells
         #tonly means treatment only
     tonly = plate_data[plate_data['contents'] == 'Treatment']
@@ -44,8 +45,10 @@ def column_bias(plate_data, data_metric):
         statistic, pvalue = st.ttest_ind (rep_1[data_metric], rep_2[data_metric])
         if(pvalue < 0.05):
             bias_flag = True
-            # print(rep_1)
-            # print(rep_2)
+            plt.boxplot([rep_1[data_metric], rep_2[data_metric]], labels = [rep_cols[0], rep_cols[1]])
+            plt.xlabel("column number")
+            plt.ylabel("total cell counts")
+            plt.title(plate_name)
             print("column", rep_cols[0] + 1, "and column",
             rep_cols[1] + 1, "are significantly different", 
             "\nThe p value is", format(pvalue, '.3f'), 

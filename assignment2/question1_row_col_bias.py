@@ -38,7 +38,7 @@ for idx in range(len(all_wellCounts)):
     print("now analyzing row bias of", name[idx])
     r_b = row_bias(all_wellCounts[idx], "cell")
     print("now analyzing column bias of", name[idx])
-    c_b = column_bias(all_wellCounts[idx], "cell")
+    c_b = column_bias(all_wellCounts[idx], "cell", name[idx])
     if (not r_b and not c_b):
         print("no row or column bias")
 
