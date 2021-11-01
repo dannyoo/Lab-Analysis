@@ -68,7 +68,8 @@ def field_bias(plate_data, data_metric, plate_name):
         # print(bias_fields)
         field_occurances = bias_fields["group1"]
         field_occurances = field_occurances.append(bias_fields["group2"])
-        plt.hist(field_occurances, bins = 25, range = (0,26), edgecolor = "black")
+
+        plt.hist(field_occurances, bins = range(1,27), edgecolor = "black")
         plt.xlabel("field number")
         # plt.xticks(ticks = range(1, 26), labels = range(1,26))
         plt.title(plate_name)

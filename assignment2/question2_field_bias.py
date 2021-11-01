@@ -33,7 +33,7 @@ b3_fieldCounts = blast3.fieldCounts()
 
 # %%
 all_fieldCounts = [c1_fieldCounts, c2_fieldCounts, w3_fieldCounts, b3_fieldCounts]
-name = ["countinuous1", "continuous2", "wildtype", "blast"]
+name = ["continuous1", "continuous2", "wildtype", "blast"]
 
 for idx in range(len(all_fieldCounts)):
     print("\n")
