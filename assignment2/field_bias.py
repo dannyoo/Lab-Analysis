@@ -66,11 +66,12 @@ def field_bias(plate_data, data_metric, plate_name):
         pd.set_option('max_row', None)
         bias_fields = tukey_data[tukey_data["reject"] == True]
         # print(bias_fields)
-        field_occurances = bias_fields["group1"]
-        field_occurances = field_occurances.append(bias_fields["group2"])
+        field_occurence = bias_fields["group1"]
+        field_occurence = field_occurence.append(bias_fields["group2"])
 
-        plt.hist(field_occurances, bins = range(1,27), edgecolor = "black")
+        plt.hist(field_occurence, bins = range(1,27), edgecolor = "black")
         plt.xlabel("field number")
+        plt.ylabel("times of occurence in Tukey's test")
         # plt.xticks(ticks = range(1, 26), labels = range(1,26))
         plt.title(plate_name)
         plt.show()
